@@ -7,12 +7,11 @@
 package com.jigl.forces;
 
 import org.joml.Vector3f;
+
+import com.jigl.Scratch;
 import com.jigl.bodies.Body;
 
 public class Buoyancy implements Force {
-    private static final Vector3f SCRATCH_VEC3 = new Vector3f();
-    private static float SCRATCH_FLOAT;
-
     private float maxDepth;
     private float volume;
     private float liquidHeight; // in world space
@@ -31,17 +30,19 @@ public class Buoyancy implements Force {
 
     @Override
     public void update(Body a, float dt) {
-        a.getPosition(SCRATCH_VEC3);
-        SCRATCH_FLOAT = SCRATCH_VEC3.y;
-        if (SCRATCH_FLOAT >= this.liquidHeight + this.maxDepth)
-            return; // above water
-        SCRATCH_VEC3.zero();
-        SCRATCH_VEC3.y = this.liquidWeight * this.volume;
-        if (SCRATCH_FLOAT > this.liquidHeight - this.maxDepth) {
+        Vector3f pos = Scratch.VEC3.next();
+        a.getPosition(pos);
+        float height = pos.y;
+        if (height >= this.liquidHeight + this.maxDepth) return; // above water do nothing
+
+        Vector3f force = pos.zero();
+        force.y = this.liquidWeight * this.volume;
+        if (height > this.liquidHeight - this.maxDepth) {
             // partially submerged
-            SCRATCH_VEC3.y *= (this.liquidHeight + this.maxDepth - SCRATCH_FLOAT) / (2 * this.maxDepth);
+            force.y *= (this.liquidHeight + this.maxDepth - height) / (2 * this.maxDepth);
         }
-        SCRATCH_VEC3.y -= this.damping * a.getDY(); // apply damping
-        a.poke(SCRATCH_VEC3, this.centerOfBuoyancy);
+        force.y -= this.damping * a.getDY(); // apply damping
+        a.poke(force, this.centerOfBuoyancy);
+        Scratch.VEC3.free(force);
     }
 }

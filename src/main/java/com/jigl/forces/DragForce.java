@@ -7,10 +7,10 @@ package com.jigl.forces;
 
 import org.joml.Vector3f;
 
+import com.jigl.Scratch;
 import com.jigl.bodies.Body;
+
 public class DragForce implements Force {
-    private static final Vector3f SCRATCH_VEC3 = new Vector3f();
-    private static float SCRATCH_FLOAT;
     private float k1, k2;
 
     public DragForce(float k1, float k2) {
@@ -21,12 +21,13 @@ public class DragForce implements Force {
     @Override
     public void update(Body a, float dt) {
         // f = (k1*|v| + k2*|v|^2)*-normalize(v)
-        a.getVelocity(SCRATCH_VEC3);
-        SCRATCH_FLOAT = SCRATCH_VEC3.length();
-        if (SCRATCH_FLOAT > 0)
-            SCRATCH_VEC3.mul(SCRATCH_FLOAT);
-        SCRATCH_FLOAT = this.k1 * SCRATCH_FLOAT + this.k2 * SCRATCH_FLOAT * SCRATCH_FLOAT;
-        SCRATCH_VEC3.mul(-SCRATCH_FLOAT);
-        a.applyForce(SCRATCH_VEC3);
+        Vector3f v = Scratch.VEC3.next();
+        a.getVelocity(v);
+        float mag = v.length();
+        if (mag > 0) v.mul(mag);
+        float f = this.k1 * mag + this.k2 * mag * mag;
+        v.mul(-f);
+        a.applyForce(v);
+        Scratch.VEC3.free(v);
     }
 }

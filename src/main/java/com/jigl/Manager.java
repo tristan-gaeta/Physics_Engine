@@ -40,25 +40,26 @@ public class Manager<T> {
     /**
      * @return the next item in the stack
      */
-    public synchronized T next(){
+    public T next(){
         return this.items[index++];
     }
 
     /**
      * @return True if there are any more resources to be allocated
      */
-    public synchronized boolean hasNext(){
+    public boolean hasNext(){
         return this.index < this.items.length;
     }
 
     /**
-     * Returns given resources to the stack
+     * Returns given resources to the stack. Items MUST be returned in
+     * the reverse order that they were requested.
      * 
      * @param items the resources being returned
      */
-    public synchronized void free(T... items){
-        for (T item: items){
-            this.items[this.index--] = item;
-        }
+    public void free(T... items){
+        for (T item: items)
+            if (item != this.items[--this.index]) 
+                throw new IllegalArgumentException("Resource Lost! Item being returned was not the last distributed");
     }
 }

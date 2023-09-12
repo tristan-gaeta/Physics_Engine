@@ -8,10 +8,9 @@ import org.joml.Matrix3f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public abstract class Body {
-    protected static final Vector3f SCRATCH_VEC3_0 = new Vector3f();
-    protected static final Quaternionf SCRATCH_QUATERNION = new Quaternionf();
+import com.jigl.Scratch;
 
+public abstract class Body {
     protected boolean isStatic;
     protected float linearDamping = 0.995f;
     protected float angularDamping = 0.995f;
@@ -48,16 +47,20 @@ public abstract class Body {
     }
 
     public void poke(Vector3f force, Vector3f contact) {
-        contact.get(SCRATCH_VEC3_0);
-        this.worldSpace(SCRATCH_VEC3_0);
-        this.applyForceAt(force, SCRATCH_VEC3_0);
+        Vector3f v = Scratch.VEC3.next();
+        contact.get(v);
+        this.worldSpace(v);
+        this.applyForceAt(force, v);
+        Scratch.VEC3.free(v);
     }
 
     public void applyForceAt(Vector3f force, Vector3f source) {
         this.applyForce(force);
-        source.sub(this.position, SCRATCH_VEC3_0);
-        SCRATCH_VEC3_0.cross(force);
-        this.applyTorque(SCRATCH_VEC3_0);
+        Vector3f v = Scratch.VEC3.next();
+        source.sub(this.position, v);
+        v.cross(force);
+        this.applyTorque(v);
+        Scratch.VEC3.free(v);
     }
 
     public void applyForce(Vector3f force) {
@@ -110,10 +113,11 @@ public abstract class Body {
 
     public void update(float dt) {
         // acceleration from forces and torques
-        this.acceleration.fma(this.inverseMass, this.force, SCRATCH_VEC3_0);
+        Vector3f v = Scratch.VEC3.next();
+        this.acceleration.fma(this.inverseMass, this.force, v);
         this.inverseInertiaWorld.transform(this.torque, this.angularAcc);
         // velocity from acc and impulse
-        this.velocity.fma(dt, SCRATCH_VEC3_0);
+        this.velocity.fma(dt, v);
         this.rotation.fma(dt, this.angularAcc);
         // apply damping
         this.velocity.mul((float) Math.pow(this.linearDamping, dt));
@@ -126,14 +130,18 @@ public abstract class Body {
         this.torque.zero();
 
         this.getInverseInertiaWord(this.inverseInertiaWorld);
+
+        Scratch.VEC3.free(v);
     }
 
     protected void updateOrientation(float dt) {
-        SCRATCH_QUATERNION.set(this.rotation.x * dt, this.rotation.y * dt, this.rotation.z * dt, 0);
-        SCRATCH_QUATERNION.mul(this.orientation);
-        SCRATCH_QUATERNION.mul(0.5f);
-        this.orientation.add(SCRATCH_QUATERNION);
+        Quaternionf q = Scratch.QUAT.next();
+        q.set(this.rotation.x * dt, this.rotation.y * dt, this.rotation.z * dt, 0);
+        q.mul(this.orientation);
+        q.mul(0.5f);
+        this.orientation.add(q);
         this.orientation.normalize();
+        Scratch.QUAT.free(q);
     }
 
     public Vector3f getPosition(Vector3f dest) {
