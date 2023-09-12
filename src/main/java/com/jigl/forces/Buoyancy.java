@@ -1,7 +1,12 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ * Planar buoyancy force
+ */
 package com.jigl.forces;
 
 import org.joml.Vector3f;
-
 import com.jigl.bodies.Body;
 
 public class Buoyancy implements Force {

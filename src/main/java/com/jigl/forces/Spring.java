@@ -1,3 +1,9 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ * Spring force
+ */
 package com.jigl.forces;
 
 import org.joml.Vector3f;

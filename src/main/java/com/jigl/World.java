@@ -1,3 +1,9 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ * Bare bones world object
+ */
 package com.jigl;
 
 import java.util.LinkedList;

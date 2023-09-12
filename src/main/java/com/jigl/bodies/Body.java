@@ -1,8 +1,7 @@
 /**
- * This is the class for a generic ridged body
- * 
  * @author Tristan Gaeta
- * @version 10-22
+ * @version 09-11-2023
+ * 
  */
 package com.jigl.bodies;
 import org.joml.Matrix3f;

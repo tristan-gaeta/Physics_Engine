@@ -1,3 +1,9 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ * gravity force
+ */
 package com.jigl.forces;
 
 import org.joml.Vector3f;

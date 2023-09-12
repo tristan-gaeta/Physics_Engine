@@ -1,12 +1,31 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ *
+ * To avoid unnecessary memory allocation, we will instantiate a number of 
+ * objects, like vectors or matrices, and manage their allocation ourselves.
+ * The Manager class is recreating how vector ops should work in the call stack.
+ * To prevent memory loss, make sure every object obtained using the "next()" 
+ * method is returned in the using the "free()" method.
+ */
+
 package com.jigl;
 
 public class Manager<T> {
     private final T[] items;
     private int index;
 
+    /**
+     * Constructor takes the Class object of the type it is storing.
+     * 
+     * 
+     * @param cls the class from which the constructor will be used
+     * @param numItems the number of items to be created
+     */
     public Manager(Class<T> cls, int numItems){
         this.items = (T[]) new Object[numItems];
         try {
+            // instantiate items
             for (int i = 0; i < this.items.length; i++){
                 this.items[i] = cls.getDeclaredConstructor().newInstance();
             }
@@ -18,14 +37,25 @@ public class Manager<T> {
         this.index = 0;
     }
 
+    /**
+     * @return the next item in the stack
+     */
     public synchronized T next(){
         return this.items[index++];
     }
 
+    /**
+     * @return True if there are any more resources to be allocated
+     */
     public synchronized boolean hasNext(){
         return this.index < this.items.length;
     }
 
+    /**
+     * Returns given resources to the stack
+     * 
+     * @param items the resources being returned
+     */
     public synchronized void free(T... items){
         for (T item: items){
             this.items[this.index--] = item;

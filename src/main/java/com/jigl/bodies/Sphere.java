@@ -1,3 +1,8 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ */
 package com.jigl.bodies;
 
 import com.jigl.collisions.Collidable;

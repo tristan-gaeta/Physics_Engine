@@ -1,3 +1,7 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ */
 package com.jigl;
 
 import java.util.HashMap;

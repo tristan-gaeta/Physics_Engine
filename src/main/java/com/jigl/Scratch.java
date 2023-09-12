@@ -1,3 +1,9 @@
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ * Global access to pre-allocated resources like matrices and vectors
+ */
 package com.jigl;
 
 import org.joml.Matrix3f;
