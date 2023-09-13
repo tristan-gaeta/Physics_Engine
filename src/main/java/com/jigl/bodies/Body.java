@@ -42,7 +42,7 @@ public abstract class Body {
         this.position = new Vector3f();
         this.velocity = new Vector3f();
         this.force = new Vector3f();
-        this.acceleration = new Vector3f(0, -9.801f, 0);
+        this.acceleration = new Vector3f(0, 0, 0);
         this.inverseMass = 1;
     }
 

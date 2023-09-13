@@ -9,7 +9,7 @@ public class App
 {
     public static void main( String[] args )
     {
-        Manager<Vector3f> vec3Manager = new Manager<>(Vector3f.class, 10);
+        Manager<Vector3f> vec3Manager = new Manager<>(Vector3f.class, 0);
         vec3Manager.next();
         vec3Manager.next();
         vec3Manager.next();

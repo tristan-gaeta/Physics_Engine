@@ -11,7 +11,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class Scratch {
-    public static final Manager<Vector3f> VEC3 = new Manager<>(Vector3f.class, 10);
-    public static final Manager<Matrix3f> MAT3 = new Manager<>(Matrix3f.class, 10);
-    public static final Manager<Quaternionf> QUAT = new Manager<>(Quaternionf.class, 10);
+    public static final Manager<Vector3f> VEC3 = new Manager<>(Vector3f.class, 0);
+    public static final Manager<Matrix3f> MAT3 = new Manager<>(Matrix3f.class, 0);
+    public static final Manager<Quaternionf> QUAT = new Manager<>(Quaternionf.class, 0);
 }

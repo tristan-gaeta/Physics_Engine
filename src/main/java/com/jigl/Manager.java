@@ -12,43 +12,54 @@
 package com.jigl;
 
 public class Manager<T> {
-    private final T[] items;
+    private final Class<T> itemClass;
+    private T[] items;
     private int index;
 
     /**
      * Constructor takes the Class object of the type it is storing.
      * 
      * 
-     * @param cls the class from which the constructor will be used
+     * @param cls      the class from which the constructor will be used
      * @param numItems the number of items to be created
      */
-    public Manager(Class<T> cls, int numItems){
-        this.items = (T[]) new Object[numItems];
+    public Manager(Class<T> itemClass, int numItems) {
+        this.itemClass = itemClass;
+        this.allocateResources(numItems);
+    }
+
+    public void allocateResources(int numResources) {
+        T[] newArray = (T[]) new Object[numResources];
+        // copy old items
+        for (int i = 0; i < this.index; i++) {
+            newArray[i] = this.items[i];
+        }
+        // instantiate new resources
+        for (int i = this.index; i < newArray.length; i++) {
+            newArray[i] = this.createNewInstance();
+        }
+        this.items = newArray;
+    }
+
+    private T createNewInstance() {
         try {
-            // instantiate items
-            for (int i = 0; i < this.items.length; i++){
-                this.items[i] = cls.getDeclaredConstructor().newInstance();
-            }
-            
+            return this.itemClass.getDeclaredConstructor().newInstance();
+
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Could not instantiate Generic type");
+            throw new IllegalArgumentException("Could not instantiate Generic type: " + this.itemClass);
         }
-        this.index = 0;
     }
 
     /**
      * @return the next item in the stack
      */
-    public T next(){
+    public T next() {
+        if (this.index == this.items.length) {
+            int newSize = (this.items.length * 3) / 2 + 1;
+            this.allocateResources(newSize);
+        }
         return this.items[index++];
-    }
-
-    /**
-     * @return True if there are any more resources to be allocated
-     */
-    public boolean hasNext(){
-        return this.index < this.items.length;
     }
 
     /**
@@ -57,9 +68,9 @@ public class Manager<T> {
      * 
      * @param items the resources being returned
      */
-    public void free(T... items){
-        for (T item: items)
-            if (item != this.items[--this.index]) 
+    public void free(T... items) {
+        for (T item : items)
+            if (item != this.items[--this.index])
                 throw new IllegalArgumentException("Resource Lost! Item being returned was not the last distributed");
     }
 }
