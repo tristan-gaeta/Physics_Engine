@@ -15,7 +15,7 @@ public class PhysicsEngine implements Runnable {
     private long prevTime;
 
     private long prevWriteTime;
-    private long writeInterval = 16666666;
+    private long writeInterval = 16;
 
     public World world;
     private HashMap<Integer, Matrix4f> sharedData;
@@ -28,21 +28,20 @@ public class PhysicsEngine implements Runnable {
 
     @Override
     public void run() {
-        this.prevTime = System.nanoTime();
+        this.prevTime = System.currentTimeMillis();
         Vector3f v = new Vector3f();
         Quaternionf q = new Quaternionf();
 
         while (true) {
-            this.currentTime = System.nanoTime();
+            this.currentTime = System.currentTimeMillis();
             this.deltaTime = currentTime - this.prevTime;
             this.prevTime = currentTime;
 
-            this.world.update(this.deltaTime * 1e-9f);
+            this.world.update(this.deltaTime * 1e-3f);
             if (this.currentTime - this.prevWriteTime > this.writeInterval) {
                 this.prevWriteTime = this.currentTime;
                 for (int i = 0; i < this.world.bodies.size(); i++) {
                     v = this.world.bodies.get(i).getPosition(v);
-                    // q = this.world.bodies.get(i).get;
 
                     this.sharedDatum = this.sharedData.get(i);
                     synchronized (this.sharedDatum) {

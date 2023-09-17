@@ -40,7 +40,7 @@ public abstract class BoundingVolume implements Intersectable {
     public static boolean intersects(BoundingBox b1, BoundingBox b2) {
         // perform separation of axes
         float r1, r2; // projected radii
-        Matrix3f rotation = Scratch.MAT3.next().rotation(b2.orientation).transpose().rotate(b1.orientation); //R1^-1*R2
+        Matrix3f rotation = Scratch.MAT3.next().rotation(b2.orientation).transpose().rotate(b1.orientation); // R1^-1*R2
         Matrix3f absRotation = Scratch.MAT3.next();
         Vector3f tmp = Scratch.VEC3.next();
         for (int i = 0; i < 3; i++)
@@ -118,5 +118,9 @@ public abstract class BoundingVolume implements Intersectable {
         float d2 = b.closestPoint(s.center, tmp).distanceSquared(s.center);
         Scratch.VEC3.free(tmp);
         return d2 <= s.radius * s.radius;
+    }
+
+    public static boolean intersects(BoundingBox b, BoundingSphere s) {
+        return intersects(s, b);
     }
 }

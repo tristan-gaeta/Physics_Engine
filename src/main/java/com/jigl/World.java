@@ -12,6 +12,9 @@ import com.jigl.forces.Force;
  * Bare bones world object
  */
 public class World {
+    /** Acceleration due to gravity in m/s */
+    public static final float GRAVITY = 9.807f; 
+
     public List<Body> bodies;
     private List<Connection> forces;
 

@@ -1,9 +1,11 @@
 package com.jigl.bodies;
+
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-
 import com.jigl.Scratch;
+import com.jigl.World;
+import com.jigl.collisions.BoundingVolume;
 
 /**
  * @author Tristan Gaeta
@@ -11,9 +13,13 @@ import com.jigl.Scratch;
  * 
  */
 public abstract class Body {
+    /** Linear damping applied to this body every update */
+    protected static final float LINEAR_DAMPING = 0.995f;
+    /** Angular damping applied to this body every update */
+    protected static final float ANGULAR_DAMPING = 0.995f;
+
     protected boolean isStatic;
-    protected float linearDamping = 0.995f;
-    protected float angularDamping = 0.995f;
+
     // angular motion
     protected Quaternionf orientation;
     protected Vector3f rotation;
@@ -26,8 +32,8 @@ public abstract class Body {
     protected Vector3f force;
     protected Vector3f acceleration;
     protected float inverseMass;
-    // derived quantities
-    protected Matrix3f inverseInertiaWorld;
+
+    protected BoundingVolume boundingVolume;
 
     public Body() {
         this.isStatic = false;
@@ -37,13 +43,11 @@ public abstract class Body {
         this.torque = new Vector3f();
         this.angularAcc = new Vector3f();
         this.inverseInertia = new Matrix3f();
-        this.inverseInertiaWorld = new Matrix3f();
         // linear motion
         this.position = new Vector3f();
         this.velocity = new Vector3f();
         this.force = new Vector3f();
-        this.acceleration = new Vector3f(0, 0, 0);
-        this.inverseMass = 1;
+        this.acceleration = new Vector3f(0, World.GRAVITY, 0);
     }
 
     public void poke(Vector3f force, Vector3f contact) {
@@ -103,25 +107,27 @@ public abstract class Body {
         return dest;
     }
 
-    public void getInverseInertiaWord(Matrix3f dest) {
+    public Matrix3f getInverseInertiaWord(Matrix3f dest) {
         // O' = R^T O R
         this.orientation.get(dest);
         dest.transpose();
         dest.mul(this.inverseInertia);
         dest.rotate(this.orientation);
+        return dest;
     }
 
     public void update(float dt) {
         // acceleration from forces and torques
         Vector3f v = Scratch.VEC3.next();
         this.acceleration.fma(this.inverseMass, this.force, v);
-        this.inverseInertiaWorld.transform(this.torque, this.angularAcc);
+        Matrix3f inverseInertiaWorld = this.getInverseInertiaWord(Scratch.MAT3.next());
+        inverseInertiaWorld.transform(this.torque, this.angularAcc);
         // velocity from acc and impulse
         this.velocity.fma(dt, v);
         this.rotation.fma(dt, this.angularAcc);
         // apply damping
-        this.velocity.mul((float) Math.pow(this.linearDamping, dt));
-        this.rotation.mul((float) Math.pow(this.angularDamping, dt));
+        this.velocity.mul((float) Math.pow(LINEAR_DAMPING, dt));
+        this.rotation.mul((float) Math.pow(ANGULAR_DAMPING, dt));
         // position from velocities
         this.position.fma(dt, this.velocity);
         this.updateOrientation(dt);
@@ -129,12 +135,10 @@ public abstract class Body {
         this.force.zero();
         this.torque.zero();
 
-        this.getInverseInertiaWord(this.inverseInertiaWorld);
-
         Scratch.VEC3.free(v);
     }
 
-    protected void updateOrientation(float dt) {
+    private void updateOrientation(float dt) {
         Quaternionf q = Scratch.QUAT.next();
         q.set(this.rotation.x * dt, this.rotation.y * dt, this.rotation.z * dt, 0);
         q.mul(this.orientation);
