@@ -1,8 +1,3 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- */
 package com.jigl.collisions;
 
 import org.joml.Math;
@@ -12,6 +7,13 @@ import org.joml.Vector3f;
 
 import com.jigl.Scratch;
 
+/**
+ * 
+ * 
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ */
 public class BoundingBox extends BoundingVolume {
     protected Vector3f halfWidths;
     protected Quaternionf orientation;
@@ -51,7 +53,7 @@ public class BoundingBox extends BoundingVolume {
             dest.fma(dist, axis);
         }
 
-        Scratch.VEC3.free(translation, axis);
+        Scratch.VEC3.free(axis, translation);
         Scratch.MAT3.free(rotation);
 
         return dest;

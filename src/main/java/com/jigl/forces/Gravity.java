@@ -1,15 +1,15 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- * gravity force
- */
 package com.jigl.forces;
 
 import org.joml.Vector3f;
 
 import com.jigl.bodies.Body;
 
+/**
+ * Force applies constant acceleration.
+ * 
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ */
 public class Gravity implements Force {
     private Vector3f g; //acceleration due to gravity (m/s^2)
 

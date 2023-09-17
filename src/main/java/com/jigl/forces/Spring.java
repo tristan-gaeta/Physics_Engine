@@ -1,16 +1,15 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- * Spring force
- */
 package com.jigl.forces;
 
 import org.joml.Vector3f;
-
 import com.jigl.Scratch;
 import com.jigl.bodies.Body;
 
+/**
+ * Spring force
+ * 
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ */
 public class Spring implements Force {
     private Body anchor;
     private Vector3f anchorConnection;

@@ -1,14 +1,14 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- */
+
 package com.jigl;
 
 import java.util.HashMap;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ */
 public class PhysicsEngine implements Runnable {
     private long deltaTime;
     private long currentTime;

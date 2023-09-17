@@ -1,14 +1,17 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- */
 package com.jigl.forces;
 
 import org.joml.Vector3f;
 
 import com.jigl.Scratch;
 import com.jigl.bodies.Body;
+/**
+ * Similar to a spring force put there is no repulsive force
+ * applied when the length is less than the resting length.
+ * 
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ */
 public class Elastic implements Force {
     private Body anchor;
     private Vector3f anchorConnection;

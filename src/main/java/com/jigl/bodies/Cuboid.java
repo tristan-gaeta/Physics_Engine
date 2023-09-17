@@ -1,10 +1,10 @@
+package com.jigl.bodies;
+
 /**
  * @author Tristan Gaeta
  * @version 09-11-2023
  * 
  */
-package com.jigl.bodies;
-
 public class Cuboid extends Body {
     private float width, height, depth;
 

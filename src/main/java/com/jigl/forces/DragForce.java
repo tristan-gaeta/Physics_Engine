@@ -20,14 +20,16 @@ public class DragForce implements Force {
 
     @Override
     public void update(Body a, float dt) {
-        // f = (k1*|v| + k2*|v|^2)*-normalize(v)
+        // f = (k1*|v| + k2*|v|^2) * -normalize(v)
+        //   = -(k1 + k2*|v|) * v
         Vector3f v = Scratch.VEC3.next();
         a.getVelocity(v);
         float mag = v.length();
-        if (mag > 0) v.mul(mag);
-        float f = this.k1 * mag + this.k2 * mag * mag;
-        v.mul(-f);
-        a.applyForce(v);
+        if (mag > 0) {
+            float scalar = this.k1 + this.k2 * mag;
+            v.mul(-scalar);
+            a.applyForce(v);
+        }
         Scratch.VEC3.free(v);
     }
 }

@@ -1,9 +1,3 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- * Bare bones world object
- */
 package com.jigl;
 
 import java.util.LinkedList;
@@ -11,6 +5,12 @@ import java.util.List;
 import com.jigl.bodies.Body;
 import com.jigl.forces.Force;
 
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ * Bare bones world object
+ */
 public class World {
     public List<Body> bodies;
     private List<Connection> forces;

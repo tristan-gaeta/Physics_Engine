@@ -1,13 +1,13 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- */
 package com.jigl.collisions;
 
 import org.joml.Math;
 import org.joml.Vector3f;
 
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ */
 public class BoundingSphere extends BoundingVolume {
     protected static final float VOLUME_CONSTANT = Math.toRadians(240f);
     protected float radius;

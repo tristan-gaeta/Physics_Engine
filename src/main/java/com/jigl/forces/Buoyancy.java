@@ -1,16 +1,15 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- * Planar buoyancy force
- */
 package com.jigl.forces;
 
 import org.joml.Vector3f;
 
 import com.jigl.Scratch;
 import com.jigl.bodies.Body;
-
+/**
+ * Planar buoyancy force
+ * 
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ */
 public class Buoyancy implements Force {
     private float maxDepth;
     private float volume;

@@ -1,8 +1,3 @@
-/**
- * @author Tristan Gaeta
- * @version 09-11-2023
- * 
- */
 package com.jigl.bodies;
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
@@ -10,6 +5,11 @@ import org.joml.Vector3f;
 
 import com.jigl.Scratch;
 
+/**
+ * @author Tristan Gaeta
+ * @version 09-11-2023
+ * 
+ */
 public abstract class Body {
     protected boolean isStatic;
     protected float linearDamping = 0.995f;
