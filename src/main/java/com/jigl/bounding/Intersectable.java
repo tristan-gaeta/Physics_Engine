@@ -1,4 +1,4 @@
-package com.jigl.collisions;
+package com.jigl.bounding;
 
 /**
  * @author Tristan Gaeta

@@ -5,14 +5,14 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import com.jigl.Scratch;
 import com.jigl.World;
-import com.jigl.collisions.BoundingVolume;
+import com.jigl.bounding.BoundingVolume;
 
 /**
  * @author Tristan Gaeta
  * @version 09-11-2023
  * 
  */
-public abstract class Body {
+public abstract class Body implements Collidable{
     /** Linear damping applied to this body every update */
     protected static final float LINEAR_DAMPING = 0.995f;
     /** Angular damping applied to this body every update */
@@ -33,7 +33,7 @@ public abstract class Body {
     protected Vector3f acceleration;
     protected float inverseMass;
 
-    protected BoundingVolume boundingVolume;
+    public BoundingVolume boundingVolume;
 
     public Body() {
         this.isStatic = false;

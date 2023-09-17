@@ -1,4 +1,4 @@
-package com.jigl.collisions;
+package com.jigl.bounding;
 
 import org.joml.Math;
 import org.joml.Matrix3f;

@@ -38,7 +38,17 @@ public class World {
         for (Body b: this.bodies){
             b.update(dt);
         }
+        for (int i = 1; i < this.bodies.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                Body a = this.bodies.get(i);
+                Body b = this.bodies.get(j);
+                boolean test = a.boundingVolume.intersectsGeneric(b.boundingVolume);
+                if (test){
+                    a.collideGeneric(b, null);
+                }
+            }
+        }
     }
 
-    private record Connection(Force force, Body body){};
+    private static record Connection(Force force, Body body){};
 }

@@ -2,6 +2,8 @@ package com.jigl.bodies;
 
 import org.joml.Vector3f;
 
+import com.jigl.bounding.BoundingBox;
+
 /**
  * 
  * 
@@ -22,16 +24,40 @@ public class Box extends Body {
      */
     public Box(float width, float height, float depth, float mass) {
         super();
-        this.halfWidths.set(0.5 * height, 0.5 * depth, 0.5 * mass);
+        this.halfWidths = new Vector3f(0.5f * height, 0.5f * depth, 0.5f * mass);
         this.inverseMass = 1f / mass;
         this.setInverseInertiaTensor(width, height, depth);
+        this.boundingVolume = new BoundingBox(this.position, this.orientation, this.halfWidths);
     }
 
+    /**
+     * Set the inverse inertia tensor using the current inverse mass
+     * and given dimensions.
+     * 
+     * @param width
+     * @param height
+     * @param depth
+     */
     protected void setInverseInertiaTensor(float width, float height, float depth) {
         float scalar = 12 * this.inverseMass;
         float w2 = width * width;
         float h2 = height * height;
         float d2 = depth * depth;
         this.inverseInertia.scaling(scalar / (h2 + d2), scalar / (w2 + d2), scalar / (w2 + h2));
+    }
+
+    @Override
+    public void collideGeneric(Collidable other, Contact contactData) {
+        other.collide(this, contactData);
+    }
+
+    @Override
+    public void collide(Sphere s, Contact contactData) {
+
+    }
+
+    @Override
+    public void collide(Box s, Contact contactData) {
+
     }
 }

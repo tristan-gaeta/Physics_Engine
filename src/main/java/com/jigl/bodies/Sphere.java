@@ -1,13 +1,13 @@
 package com.jigl.bodies;
 
-import com.jigl.collisions.Collidable;
+import com.jigl.bounding.BoundingSphere;
 
 /**
  * @author Tristan Gaeta
  * @version 09-11-2023
  * 
  */
-public class Sphere extends Body implements Collidable {
+public class Sphere extends Body  {
     private float radius;
 
     public Sphere(float r, float mass) {
@@ -15,6 +15,7 @@ public class Sphere extends Body implements Collidable {
         this.radius = r;
         this.inverseMass = 1 / mass;
         this.setInverseInertiaTensor(mass);
+        this.boundingVolume = new BoundingSphere(this.position, r);
     }
 
     private void setInverseInertiaTensor(float mass) {
@@ -23,12 +24,16 @@ public class Sphere extends Body implements Collidable {
     }
 
     @Override
-    public void collideGeneric(Collidable other, Collidable.Contact[] data, int limit) {
-        other.collide(this, data, limit);
+    public void collideGeneric(Collidable other, Collidable.Contact contactData) {
+        other.collide(this, contactData);
     }
 
     @Override
-    public void collide(Sphere s, Collidable.Contact[] data, int limit) {
+    public void collide(Sphere s, Collidable.Contact contactData) {
+        
+    }
 
+    @Override
+    public void collide(Box s, Contact contactData) {
     }
 }

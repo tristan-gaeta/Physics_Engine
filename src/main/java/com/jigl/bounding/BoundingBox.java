@@ -1,4 +1,4 @@
-package com.jigl.collisions;
+package com.jigl.bounding;
 
 import org.joml.Math;
 import org.joml.Matrix3f;
@@ -18,11 +18,11 @@ public class BoundingBox extends BoundingVolume {
     protected Vector3f halfWidths;
     protected Quaternionf orientation;
 
-    public BoundingBox(Vector3f anchor, Quaternionf focus, float halfWidth, float halfHeight, float halfDepth) {
+    public BoundingBox(Vector3f anchor, Quaternionf focus, Vector3f halfWidths) {
         this.center = anchor;
         this.orientation = focus;
-        this.halfWidths = new Vector3f(halfWidth, halfHeight, halfDepth);
-        this.volume = 8 * halfWidth * halfHeight * halfDepth;
+        this.halfWidths = halfWidths;
+        this.volume = 8f * halfWidths.x * halfWidths.y * halfWidths.z;
     }
 
     @Override
