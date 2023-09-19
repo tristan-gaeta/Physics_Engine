@@ -53,7 +53,7 @@ public class BoundingBox extends BoundingVolume {
             dest.fma(dist, axis);
         }
 
-        Scratch.VEC3.free(axis, translation);
+        Scratch.VEC3.free( axis, translation);
         Scratch.MAT3.free(rotation);
 
         return dest;

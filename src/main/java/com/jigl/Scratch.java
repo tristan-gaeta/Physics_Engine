@@ -12,9 +12,25 @@ import org.joml.Vector3f;
  */
 public class Scratch {
     /** Scratch Vector3f Manager */
-    public static final Manager<Vector3f> VEC3 = new Manager<>(Vector3f.class);
+    public static final Manager<Vector3f> VEC3 = new Manager<>() {
+        @Override
+        protected Vector3f createNewInstance() {
+            return new Vector3f();
+        }
+    };
     /** Scratch Matrix3f Manager */
-    public static final Manager<Matrix3f> MAT3 = new Manager<>(Matrix3f.class);
+    public static final Manager<Matrix3f> MAT3 = new Manager<>() {
+        @Override
+        protected Matrix3f createNewInstance() {
+            return new Matrix3f();
+        }
+    };
     /** Scratch Quaternionf Manager */
-    public static final Manager<Quaternionf> QUAT = new Manager<>(Quaternionf.class);
+    public static final Manager<Quaternionf> QUAT = new Manager<>() {
+        @Override
+        protected Quaternionf createNewInstance() {
+            return new Quaternionf();
+        }
+    };
+
 }

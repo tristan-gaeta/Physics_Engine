@@ -136,6 +136,7 @@ public abstract class Body implements Collidable{
         this.torque.zero();
 
         Scratch.VEC3.free(v);
+        Scratch.MAT3.free(inverseInertiaWorld);
     }
 
     private void updateOrientation(float dt) {

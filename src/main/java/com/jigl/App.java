@@ -10,9 +10,9 @@ import com.jigl.forces.Force;
  * @version 09-11-2023
  */
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         PhysicsEngine engine = new PhysicsEngine();
-        Force f  = new DragForce(0.001f, 0.01f);
+        Force f = new DragForce(0.001f, 0.01f);
 
         Body a = new Box(1, 1, 1, 1);
         engine.world.addBody(a);
@@ -22,6 +22,6 @@ public class App {
         engine.world.addBody(b);
         engine.world.addConnection(f, b);
 
-        engine.run();
+        engine.start();
     }
 }

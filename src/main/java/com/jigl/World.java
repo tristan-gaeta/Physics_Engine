@@ -6,10 +6,10 @@ import com.jigl.bodies.Body;
 import com.jigl.forces.Force;
 
 /**
+ * Bare bones world object
+ * 
  * @author Tristan Gaeta
  * @version 09-11-2023
- * 
- * Bare bones world object
  */
 public class World {
     /** Acceleration due to gravity in m/s */
@@ -43,9 +43,6 @@ public class World {
                 Body a = this.bodies.get(i);
                 Body b = this.bodies.get(j);
                 boolean test = a.boundingVolume.intersectsGeneric(b.boundingVolume);
-                if (test){
-                    a.collideGeneric(b, null);
-                }
             }
         }
     }
