@@ -3,6 +3,7 @@ package com.jigl;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Engine runs update on world object
@@ -10,16 +11,26 @@ import java.util.concurrent.TimeUnit;
  * @author Tristan Gaeta
  * @version 09-11-2023
  */
-public class PhysicsEngine implements Runnable {
-    /** throttle refresh rate at 125Hz */
-    private static final long TARGET_DELTA_TIME = 16;
+public class PhysicsEngine {
+    /** Target interval for engine */
+    private static final long TARGET_DELTA_TIME_MILLIS = 8;
 
-    private final ScheduledExecutorService executor;
+    /** Currently using nanoseconds as system time unit */
+    private static final float SECONDS_PER_TIME_UNIT = 1e-9f;
 
+    /** Executor will call step function at a fixed rate */
+    private final ScheduledExecutorService stepExecutor;
+
+    // thread safe pause and quite
+    private final AtomicBoolean isPaused;
+    private final AtomicBoolean quit;
+
+    // timing
     private long deltaTime;
     private long currentTime;
     private long prevTime;
 
+    /** This engine's current world object */
     public World world;
 
     /**
@@ -27,44 +38,87 @@ public class PhysicsEngine implements Runnable {
      */
     public PhysicsEngine() {
         this.world = new World();
-        this.executor = Executors.newSingleThreadScheduledExecutor();
+        this.stepExecutor = Executors.newSingleThreadScheduledExecutor();
+        this.isPaused = new AtomicBoolean();
+        this.quit = new AtomicBoolean();
     }
 
     /**
-     * Creates and starts a new thread to run
-     * this engine.
+     * Creates and starts a new thread to run this engine.
      * 
      * @return The new thread
      */
     public void start() {
-        this.prevTime = System.currentTimeMillis();
-        this.executor.scheduleAtFixedRate(this, 0, TARGET_DELTA_TIME, TimeUnit.MILLISECONDS);
+        this.quit.set(false);
+        this.isPaused.set(false);
+        this.prevTime = this.getSystemTime();
+        this.stepExecutor.scheduleAtFixedRate(this::step, 0, TARGET_DELTA_TIME_MILLIS, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Pause the engine, by sleeping its thread, after
+     * it completes its current step.
+     */
+    public void pause() {
+        this.isPaused.set(true);
+    }
+
+    /**
+     * Resume the engine by notifying sleeping thread
+     */
+    public void resume() {
+        boolean isPaused = this.isPaused.getAndSet(false);
+        if (!isPaused)
+            return;
+        synchronized (this.isPaused) {
+            this.isPaused.notify();
+        }
+    }
+
+    /**
+     * Stop the thread currently running the engine
+     */
+    public void stop() {
+        this.quit.set(true);
     }
 
     /**
      * 
      * 
+     * @return system time in nanoseconds
      */
-    @Override
-    public void run() {
-        this.updateTime();
-        this.step(this.deltaTime);
+    private long getSystemTime() {
+        return System.nanoTime();
     }
 
     /**
      * Simulate a single time step
      * 
-     * @param ms delta time in milliseconds
      */
-    public void step(long ms) {
-        this.world.update(ms * 1e-3f);
+    private void step() {
+        this.updateTime();
+        // pause
+        if (this.isPaused.get()) {
+            synchronized (this.isPaused) {
+                try {
+                    this.isPaused.wait();
+                    this.prevTime = this.getSystemTime();
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+        // update
+        this.world.update(this.deltaTime * SECONDS_PER_TIME_UNIT);
+        // quit
+        if (this.quit.get())
+            this.stepExecutor.shutdown();
     }
 
     /**
-     * Update the engine's time variable.
+     * Update the engine's time variables.
      */
     private void updateTime() {
-        this.currentTime = System.currentTimeMillis();
+        this.currentTime = this.getSystemTime();
         this.deltaTime = this.currentTime - this.prevTime;
         this.prevTime = this.currentTime;
     }

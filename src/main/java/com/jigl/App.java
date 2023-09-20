@@ -23,5 +23,7 @@ public class App {
         engine.world.addConnection(f, b);
 
         engine.start();
+
+        // engine.stop();
     }
 }

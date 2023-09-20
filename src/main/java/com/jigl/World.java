@@ -2,6 +2,9 @@ package com.jigl;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.joml.Vector3f;
+
 import com.jigl.bodies.Body;
 import com.jigl.forces.Force;
 
@@ -43,6 +46,7 @@ public class World {
                 Body a = this.bodies.get(i);
                 Body b = this.bodies.get(j);
                 boolean test = a.boundingVolume.intersectsGeneric(b.boundingVolume);
+                System.out.println(a.getPosition(new Vector3f()));
             }
         }
     }
