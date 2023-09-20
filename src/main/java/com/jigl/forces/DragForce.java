@@ -5,8 +5,8 @@
  */
 package com.jigl.forces;
 
-import com.jigl.Scratch;
 import com.jigl.bodies.Body;
+import com.jigl.math.Scratch;
 import com.jigl.math.Vec3;
 
 public class DragForce implements Force {

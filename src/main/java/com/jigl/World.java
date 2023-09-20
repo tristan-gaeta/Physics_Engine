@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.jigl.bodies.Body;
 import com.jigl.forces.Force;
-import com.jigl.math.Vec3;
 
 /**
  * Bare bones world object

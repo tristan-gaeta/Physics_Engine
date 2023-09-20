@@ -2,9 +2,9 @@ package com.jigl.bounding;
 
 import org.joml.Math;
 
-import com.jigl.Scratch;
 import com.jigl.math.Mat3;
 import com.jigl.math.Quat;
+import com.jigl.math.Scratch;
 import com.jigl.math.Vec3;
 
 /**

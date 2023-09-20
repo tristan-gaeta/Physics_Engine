@@ -2,8 +2,6 @@ package com.jigl.math;
 
 import org.joml.Matrix3f;
 
-import com.jigl.Scratch;
-
 public class Mat3 extends Matrix3f implements AutoCloseable {
     
     @Override

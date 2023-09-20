@@ -1,10 +1,10 @@
 package com.jigl.bodies;
 
-import com.jigl.Scratch;
 import com.jigl.World;
 import com.jigl.bounding.BoundingVolume;
 import com.jigl.math.Mat3;
 import com.jigl.math.Quat;
+import com.jigl.math.Scratch;
 import com.jigl.math.Vec3;
 
 /**

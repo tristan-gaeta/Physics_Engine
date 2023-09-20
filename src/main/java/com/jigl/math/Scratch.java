@@ -1,8 +1,4 @@
-package com.jigl;
-
-import com.jigl.math.Mat3;
-import com.jigl.math.Quat;
-import com.jigl.math.Vec3;
+package com.jigl.math;
 
 /**
  * Global access to pre-allocated resources like matrices and vectors.

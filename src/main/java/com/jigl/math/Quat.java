@@ -2,8 +2,6 @@ package com.jigl.math;
 
 import org.joml.Quaternionf;
 
-import com.jigl.Scratch;
-
 public class Quat extends Quaternionf implements AutoCloseable {
     
     @Override

@@ -1,4 +1,4 @@
-package com.jigl;
+package com.jigl.math;
 
 /**
  * Usage: To avoid unnecessary memory allocation we want to
@@ -43,7 +43,6 @@ public abstract class Manager<T> {
      * @param numResources new number of resources
      */
     private void allocateResources(int numResources) {
-        System.out.println("malloc "+numResources);
         T[] newArray = (T[]) new Object[numResources];
         for (int i = 0; i < this.index; i++)
             newArray[i] = this.items[i];
@@ -70,7 +69,9 @@ public abstract class Manager<T> {
             int newSize = (3 * this.items.length) / 2 + 1;
             this.allocateResources(newSize);
         }
-        return this.items[index++];
+        T out = this.items[index];
+        this.items[index++] = null;
+        return out;
     }
 
     /**
@@ -81,7 +82,8 @@ public abstract class Manager<T> {
      */
     public void free(T... items) {
         for (T item : items)
-            if (this.items[--this.index] != item)
-                throw new RuntimeException("Resource Lost!");
+            // if (this.items[--this.index] != item)
+            //     throw new RuntimeException("Resource Lost!");
+            this.items[--this.index] = item;
     }
 }

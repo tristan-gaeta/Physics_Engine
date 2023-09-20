@@ -2,8 +2,6 @@ package com.jigl.math;
 
 import org.joml.Vector3f;
 
-import com.jigl.Scratch;
-
 public class Vec3 extends Vector3f implements AutoCloseable {
 
     public Vec3(){
@@ -21,8 +19,8 @@ public class Vec3 extends Vector3f implements AutoCloseable {
 
     @Override
     public void finalize() {
-        System.err.println("Resource Lost.");
-        this.close();
+        System.out.println("Resource Lost.");
+        // this.close();
     }
 
 }
