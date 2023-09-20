@@ -1,7 +1,8 @@
 package com.jigl.bounding;
 
 import org.joml.Math;
-import org.joml.Vector3f;
+
+import com.jigl.math.Vec3;
 
 /**
  * @author Tristan Gaeta
@@ -13,12 +14,12 @@ public class BoundingSphere extends BoundingVolume {
     protected float radius;
 
     public BoundingSphere(float x, float y, float z, float radius) {
-        this.center = new Vector3f(x, y, z);
+        this.center = new Vec3(x, y, z);
         this.radius = radius;
         this.volume = VOLUME_CONSTANT * radius * radius * radius;
     }
 
-    public BoundingSphere(final Vector3f anchor, float radius) {
+    public BoundingSphere(final Vec3 anchor, float radius) {
         this.center = anchor;
         this.radius = radius;
         this.volume = VOLUME_CONSTANT * radius * radius * radius;

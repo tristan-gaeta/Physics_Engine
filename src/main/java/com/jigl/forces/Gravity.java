@@ -1,8 +1,8 @@
 package com.jigl.forces;
 
-import org.joml.Vector3f;
 
 import com.jigl.bodies.Body;
+import com.jigl.math.Vec3;
 
 /**
  * Force applies constant acceleration.
@@ -11,13 +11,13 @@ import com.jigl.bodies.Body;
  * @version 09-11-2023
  */
 public class Gravity implements Force {
-    private Vector3f g; //acceleration due to gravity (m/s^2)
+    private Vec3 g; //acceleration due to gravity (m/s^2)
 
     public Gravity(float x, float y, float z){
-        this.g = new Vector3f(x,y,z);
+        this.g = new Vec3(x,y,z);
     }
 
-    public Gravity(Vector3f g) {
+    public Gravity(Vec3 g) {
         this.g = g;
     }
 

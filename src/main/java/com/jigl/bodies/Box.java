@@ -1,8 +1,8 @@
 package com.jigl.bodies;
 
-import org.joml.Vector3f;
 
 import com.jigl.bounding.BoundingBox;
+import com.jigl.math.Vec3;
 
 /**
  * 
@@ -12,7 +12,7 @@ import com.jigl.bounding.BoundingBox;
  * 
  */
 public class Box extends Body {
-    protected Vector3f halfWidths;
+    protected Vec3 halfWidths;
 
     /**
      * Create a new cuboid with given dimensions and mass
@@ -24,7 +24,7 @@ public class Box extends Body {
      */
     public Box(float width, float height, float depth, float mass) {
         super();
-        this.halfWidths = new Vector3f(0.5f * height, 0.5f * depth, 0.5f * mass);
+        this.halfWidths = new Vec3(0.5f * height, 0.5f * depth, 0.5f * mass);
         this.inverseMass = 1f / mass;
         this.setInverseInertiaTensor(width, height, depth);
         this.boundingVolume = new BoundingBox(this.position, this.orientation, this.halfWidths);

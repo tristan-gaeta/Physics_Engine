@@ -1,11 +1,11 @@
 package com.jigl.bounding;
 
 import org.joml.Math;
-import org.joml.Matrix3f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import com.jigl.Scratch;
+import com.jigl.math.Mat3;
+import com.jigl.math.Quat;
+import com.jigl.math.Vec3;
 
 /**
  * 
@@ -15,10 +15,10 @@ import com.jigl.Scratch;
  * 
  */
 public class BoundingBox extends BoundingVolume {
-    protected Vector3f halfWidths;
-    protected Quaternionf orientation;
+    protected Vec3 halfWidths;
+    protected Quat orientation;
 
-    public BoundingBox(Vector3f anchor, Quaternionf focus, Vector3f halfWidths) {
+    public BoundingBox(Vec3 anchor, Quat focus, Vec3 halfWidths) {
         this.center = anchor;
         this.orientation = focus;
         this.halfWidths = halfWidths;
@@ -40,21 +40,21 @@ public class BoundingBox extends BoundingVolume {
         return BoundingVolume.intersects(this, other);
     }
 
-    public Vector3f closestPoint(Vector3f pt, Vector3f dest) {
-        Vector3f translation = pt.sub(this.center, Scratch.VEC3.next());
-        Matrix3f rotation = this.orientation.get(Scratch.MAT3.next());
-        dest.set(this.center);
-        Vector3f axis = Scratch.VEC3.next();
+    public Vec3 closestPoint(Vec3 pt, Vec3 dest) {
+        try (Vec3 translation = Scratch.VEC3.next();
+                Mat3 rotation = Scratch.MAT3.next();
+                Vec3 axis = Scratch.VEC3.next();) {
+            pt.sub(this.center, translation);
+            this.orientation.get(rotation);
+            dest.set(this.center);
 
-        for (int i = 0; i < 3; i++) {
-            rotation.getColumn(i, axis);
-            float dist = translation.dot(axis);
-            dist = Math.clamp(-this.halfWidths.get(i), this.halfWidths.get(i), dist);
-            dest.fma(dist, axis);
+            for (int i = 0; i < 3; i++) {
+                rotation.getColumn(i, axis);
+                float dist = translation.dot(axis);
+                dist = Math.clamp(-this.halfWidths.get(i), this.halfWidths.get(i), dist);
+                dest.fma(dist, axis);
+            }
         }
-
-        Scratch.VEC3.free( axis, translation);
-        Scratch.MAT3.free(rotation);
 
         return dest;
     }

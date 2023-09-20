@@ -15,7 +15,6 @@ public abstract class Manager<T> {
     private static final int DEFAULT_SIZE = 1;
     private T[] items;
     private int index;
-    private int checkPoint;
 
     /**
      * Constructor takes the Class object of the type it is storing and
@@ -25,7 +24,6 @@ public abstract class Manager<T> {
      * @param numItems the number of items to be created initially
      */
     public Manager(int numItems) {
-        this.checkPoint = -1;
         this.allocateResources(numItems);
     }
 
@@ -38,7 +36,14 @@ public abstract class Manager<T> {
         this(DEFAULT_SIZE);
     }
 
+    /**
+     * create a new resource array of given size,
+     * copying old items, and allocating more if necessary
+     * 
+     * @param numResources new number of resources
+     */
     private void allocateResources(int numResources) {
+        System.out.println("malloc "+numResources);
         T[] newArray = (T[]) new Object[numResources];
         for (int i = 0; i < this.index; i++)
             newArray[i] = this.items[i];
@@ -78,18 +83,5 @@ public abstract class Manager<T> {
         for (T item : items)
             if (this.items[--this.index] != item)
                 throw new RuntimeException("Resource Lost!");
-    }
-
-    public boolean beginCheck() {
-        if (this.checkPoint != -1)
-            return false;
-        this.checkPoint = this.index;
-        return true;
-    }
-
-    public boolean endCheck() {
-        boolean passed = this.checkPoint == this.index;
-        this.checkPoint = -1;
-        return passed;
     }
 }

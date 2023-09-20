@@ -5,10 +5,9 @@
  */
 package com.jigl.forces;
 
-import org.joml.Vector3f;
-
 import com.jigl.Scratch;
 import com.jigl.bodies.Body;
+import com.jigl.math.Vec3;
 
 public class DragForce implements Force {
     private float k1, k2;
@@ -21,15 +20,15 @@ public class DragForce implements Force {
     @Override
     public void update(Body a, float dt) {
         // f = (k1*|v| + k2*|v|^2) * -normalize(v)
-        //   = -(k1 + k2*|v|) * v
-        Vector3f v = Scratch.VEC3.next();
-        a.getVelocity(v);
-        float mag = v.length();
-        if (mag > 0) {
-            float scalar = this.k1 + this.k2 * mag;
-            v.mul(-scalar);
-            a.applyForce(v);
+        // = -(k1 + k2*|v|) * v
+        try (Vec3 v = Scratch.VEC3.next();) {
+            a.getVelocity(v);
+            float mag = v.length();
+            if (mag > 0) {
+                float scalar = this.k1 + this.k2 * mag;
+                v.mul(-scalar);
+                a.applyForce(v);
+            }
         }
-        Scratch.VEC3.free(v);
     }
 }

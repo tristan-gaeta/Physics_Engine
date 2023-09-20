@@ -1,8 +1,8 @@
 package com.jigl;
 
-import org.joml.Matrix3f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import com.jigl.math.Mat3;
+import com.jigl.math.Quat;
+import com.jigl.math.Vec3;
 
 /**
  * Global access to pre-allocated resources like matrices and vectors.
@@ -11,26 +11,25 @@ import org.joml.Vector3f;
  * @version 09-11-2023
  */
 public class Scratch {
-    /** Scratch Vector3f Manager */
-    public static final Manager<Vector3f> VEC3 = new Manager<>() {
+    /** Scratch Vector3 Manager */
+    public static final Manager<Vec3> VEC3 = new Manager<>() {
         @Override
-        protected Vector3f createNewInstance() {
-            return new Vector3f();
+        protected Vec3 createNewInstance() {
+            return new Vec3();
         }
     };
-    /** Scratch Matrix3f Manager */
-    public static final Manager<Matrix3f> MAT3 = new Manager<>() {
+    /** Scratch Matrix3 Manager */
+    public static final Manager<Mat3> MAT3 = new Manager<>() {
         @Override
-        protected Matrix3f createNewInstance() {
-            return new Matrix3f();
+        protected Mat3 createNewInstance() {
+            return new Mat3();
         }
     };
-    /** Scratch Quaternionf Manager */
-    public static final Manager<Quaternionf> QUAT = new Manager<>() {
+    /** Scratch Quaternion Manager */
+    public static final Manager<Quat> QUAT = new Manager<>() {
         @Override
-        protected Quaternionf createNewInstance() {
-            return new Quaternionf();
+        protected Quat createNewInstance() {
+            return new Quat();
         }
     };
-
 }
