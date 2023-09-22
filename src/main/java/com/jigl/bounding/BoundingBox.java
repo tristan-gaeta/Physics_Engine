@@ -25,21 +25,6 @@ public class BoundingBox extends BoundingVolume {
         this.volume = 8f * halfWidths.x * halfWidths.y * halfWidths.z;
     }
 
-    @Override
-    public boolean intersectsGeneric(Intersectable other) {
-        return other.intersects(this);
-    }
-
-    @Override
-    public boolean intersects(BoundingSphere other) {
-        return BoundingVolume.intersects(other, this);
-    }
-
-    @Override
-    public boolean intersects(BoundingBox other) {
-        return BoundingVolume.intersects(this, other);
-    }
-
     public Vec3 closestPoint(Vec3 pt, Vec3 dest) {
         try (Vec3 translation = Scratch.VEC3.next();
                 Mat3 rotation = Scratch.MAT3.next();

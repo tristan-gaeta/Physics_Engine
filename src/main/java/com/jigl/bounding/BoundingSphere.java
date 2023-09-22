@@ -2,6 +2,7 @@ package com.jigl.bounding;
 
 import org.joml.Math;
 
+import com.jigl.geometry.Intersectable;
 import com.jigl.math.Vec3;
 
 /**
@@ -23,20 +24,5 @@ public class BoundingSphere extends BoundingVolume {
         this.center = anchor;
         this.radius = radius;
         this.volume = VOLUME_CONSTANT * radius * radius * radius;
-    }
-
-    @Override
-    public boolean intersectsGeneric(Intersectable other) {
-        return other.intersects(this);
-    }
-
-    @Override
-    public boolean intersects(BoundingSphere other) {
-        return BoundingVolume.intersects(this, other);
-    }
-
-    @Override
-    public boolean intersects(BoundingBox other) {
-        return BoundingVolume.intersects(this, other);
     }
 }

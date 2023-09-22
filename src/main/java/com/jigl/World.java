@@ -43,7 +43,7 @@ public class World {
             for (int j = 0; j < i; j++) {
                 Body a = this.bodies.get(i);
                 Body b = this.bodies.get(j);
-                boolean test = a.boundingVolume.intersectsGeneric(b.boundingVolume);
+                // boolean test = a.boundingVolume.intersectsGeneric(b.boundingVolume);
             }
         }
     }

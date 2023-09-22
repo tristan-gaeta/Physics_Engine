@@ -2,6 +2,7 @@ package com.jigl.bounding;
 
 import org.joml.Math;
 
+import com.jigl.geometry.Intersectable;
 import com.jigl.math.Mat3;
 import com.jigl.math.Scratch;
 import com.jigl.math.Vec3;
@@ -11,7 +12,7 @@ import com.jigl.math.Vec3;
  * @version 09-11-2023
  * 
  */
-public abstract class BoundingVolume implements Intersectable {
+public abstract class BoundingVolume{
     protected Vec3 center;
     protected float volume;
 
