@@ -44,7 +44,6 @@ public class World {
                 Body a = this.bodies.get(i);
                 Body b = this.bodies.get(j);
                 boolean test = a.boundingVolume.intersectsGeneric(b.boundingVolume);
-                // System.out.println(a.getPosition(new Vec3()));
             }
         }
     }

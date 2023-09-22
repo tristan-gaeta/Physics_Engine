@@ -8,10 +8,4 @@ public class Quat extends Quaternionf implements AutoCloseable {
     public void close() {
         Scratch.QUAT.free(this);
     }
-
-    @Override
-    public void finalize() {
-        System.err.println("Resource Lost.");
-        this.close();
-    }
 }

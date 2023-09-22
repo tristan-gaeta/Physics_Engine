@@ -1,5 +1,8 @@
 package com.jigl.math;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Usage: To avoid unnecessary memory allocation we want to
  * instantiate a number of objects, like vectors or matrices,
@@ -13,7 +16,7 @@ package com.jigl.math;
  */
 public abstract class Manager<T> {
     private static final int DEFAULT_SIZE = 1;
-    private T[] items;
+    private final List<T> items;
     private int index;
 
     /**
@@ -24,7 +27,9 @@ public abstract class Manager<T> {
      * @param numItems the number of items to be created initially
      */
     public Manager(int numItems) {
-        this.allocateResources(numItems);
+        this.items = new ArrayList<>(numItems);
+        for (int i = 0; i < numItems; i++)
+            this.items.add(this.createNewInstance());
     }
 
     /**
@@ -37,21 +42,6 @@ public abstract class Manager<T> {
     }
 
     /**
-     * create a new resource array of given size,
-     * copying old items, and allocating more if necessary
-     * 
-     * @param numResources new number of resources
-     */
-    private void allocateResources(int numResources) {
-        T[] newArray = (T[]) new Object[numResources];
-        for (int i = 0; i < this.index; i++)
-            newArray[i] = this.items[i];
-        for (int i = this.index; i < numResources; i++)
-            newArray[i] = this.createNewInstance();
-        this.items = newArray;
-    }
-
-    /**
      * Construct a new instance of the item being stored
      * 
      * @return the new instance
@@ -60,18 +50,14 @@ public abstract class Manager<T> {
 
     /**
      * Get the next resource from this manager. If it is
-     * out of resources, it will allocate more growing 1.5x in size.
+     * out of resources, it will allocate one more.
      * 
      * @return the next item in the stack
      */
     public T next() {
-        if (this.index == this.items.length) {
-            int newSize = (3 * this.items.length) / 2 + 1;
-            this.allocateResources(newSize);
-        }
-        T out = this.items[index];
-        this.items[index++] = null;
-        return out;
+        if (this.index == this.items.size())
+            this.items.add(this.createNewInstance());
+        return this.items.get(this.index++);
     }
 
     /**
@@ -82,8 +68,13 @@ public abstract class Manager<T> {
      */
     public void free(T... items) {
         for (T item : items)
-            // if (this.items[--this.index] != item)
-            //     throw new RuntimeException("Resource Lost!");
-            this.items[--this.index] = item;
+            if (this.items.get(--this.index) != item) {
+                System.err.println("Resource Lost!");
+                Thread.dumpStack();
+            }
+    }
+
+    public int itemsOnLoan() {
+        return this.index;
     }
 }

@@ -4,6 +4,7 @@ import com.jigl.bodies.Body;
 import com.jigl.bodies.Box;
 import com.jigl.forces.DragForce;
 import com.jigl.forces.Force;
+import com.jigl.math.Vec3;
 
 /**
  * @author Tristan Gaeta

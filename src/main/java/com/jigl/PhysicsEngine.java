@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class PhysicsEngine {
     /** Target interval for engine */
-    private static final long TARGET_DELTA_TIME_MILLIS = 8;
+    private static final long TARGET_DELTA_TIME_MILLIS = 16;
 
     /** Currently using nanoseconds as system time unit */
     private static final float SECONDS_PER_TIME_UNIT = 1e-9f;
@@ -56,8 +56,8 @@ public class PhysicsEngine {
     }
 
     /**
-     * Pause the engine, by sleeping its thread, after
-     * it completes its current step.
+     * Pause the engine, by sleeping the thread it
+     * is on, after it completes the current step.
      */
     public void pause() {
         this.isPaused.set(true);
@@ -67,8 +67,7 @@ public class PhysicsEngine {
      * Resume the engine by notifying sleeping thread
      */
     public void resume() {
-        boolean isPaused = this.isPaused.getAndSet(false);
-        if (!isPaused)
+        if (!this.isPaused.getAndSet(false))
             return;
         synchronized (this.isPaused) {
             this.isPaused.notify();
@@ -83,7 +82,7 @@ public class PhysicsEngine {
     }
 
     /**
-     * 
+     * Get the current system time
      * 
      * @return system time in nanoseconds
      */
